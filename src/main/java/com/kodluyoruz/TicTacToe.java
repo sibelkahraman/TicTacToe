@@ -59,7 +59,8 @@ public class TicTacToe {
     public String checkGameStatus() {
         int totalHorizontalValue = 0;
         int totalVerticalValue = 0;
-        int totalCrossValue = 0;
+        int totalCrossValue = 0;//    \ cross
+        int totalCrossValue2 = 0;//   / cross
         int size = board.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -68,15 +69,20 @@ public class TicTacToe {
                         totalHorizontalValue += board[k][j];
                         totalVerticalValue += board[i][k];
                         totalCrossValue += board[k][k];
+                        totalCrossValue2 += board[k][size-1-k];
                     }
-                    if (totalHorizontalValue == size || totalVerticalValue == size || totalCrossValue == size)
+                    if (totalHorizontalValue == size || totalVerticalValue == size || totalCrossValue == size || totalCrossValue2 == size)
                         return "X";
-                    if (totalHorizontalValue == -size || totalVerticalValue == -size || totalCrossValue == -size)
+                    if (totalHorizontalValue == -size || totalVerticalValue == -size || totalCrossValue == -size || totalCrossValue2 == -size)
                         return "O";
+                    totalHorizontalValue = 0;
+                    totalVerticalValue = 0;
+                    totalCrossValue = 0;
+                    totalCrossValue2 = 0;
                 }
             }
         }
-        return null;
+        return "Draw";
     }
 
     public void showGameBoard() {

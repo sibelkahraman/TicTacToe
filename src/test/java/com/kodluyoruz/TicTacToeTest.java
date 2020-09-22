@@ -118,6 +118,27 @@ public class TicTacToeTest {
         //Assert
         assertThat(result).isEqualTo("O");
     }
+    @Test
+    public void checkCrossGameStatus_WhenUserAndComputerNotWin_ShouldReturnDraw() {
+        //Arrange
+        //Act
+        int[][] finishedGameBoard = new int[3][3];
+        finishedGameBoard[0][0] = 1;
+        finishedGameBoard[0][1] = 1;
+        finishedGameBoard[0][2] = -1;
+        finishedGameBoard[1][0] = -1;
+        finishedGameBoard[1][1] = -1;
+        finishedGameBoard[2][0] = 1;
+        finishedGameBoard[1][2] = 1;
+        finishedGameBoard[2][1] = -1;
+        finishedGameBoard[2][2] = 1;
+        /*sut.setBoard(finishedGameBoard);
+        sut.showGameBoard();*/
+        sut.setBoard(finishedGameBoard);
+        String result = sut.checkGameStatus();
+        //Assert
+        assertThat(result).isEqualTo("Draw");
+    }
 
     @ParameterizedTest
     @MethodSource("returnWinnerTestSource")
