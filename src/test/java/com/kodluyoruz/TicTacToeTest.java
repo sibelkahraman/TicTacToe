@@ -23,7 +23,8 @@ public class TicTacToeTest {
     @BeforeEach
     public void Setup() {
         sut = new TicTacToe();
-        board = sut.createBoard(boardSize);
+        sut.createBoard(boardSize);
+        board = sut.getBoard();
     }
 
     @Test
@@ -41,11 +42,8 @@ public class TicTacToeTest {
         //Arrange
         //Act
         boolean result = sut.isPlay(boardSize - 1, boardSize - 1);
-        //boolean result2 = sut.isPlay(2,3);
         //Assert
-
         assertThat(result).isTrue();
-        //assertThat(result2).isFalse();
     }
 
     @Test
@@ -60,19 +58,24 @@ public class TicTacToeTest {
     @Test
     public void play_WhenGivenLocation_ShouldReturnNewGameBoard() {
         //Arrange
+        int[][] newBoard;
         //Act
-        int[][] newBoard = sut.play(boardSize - 1, boardSize - 1);
+        sut.play(boardSize - 1, boardSize - 1);
+         newBoard = sut.getBoard();
         //Assert
         assertThat(newBoard[boardSize - 1][boardSize - 1]).isEqualTo(1);
     }
 
     @Test
-    public void checkComputerIsPlay_WhenAfterUserPlay_ShouldReturnNumberOfMove() {
+    public void checkComputerIsPlay_WhenUserPlayAfterComputerPlayOtomatically_ShouldReturnNumberOfMove() {
         //Arrange
+        int remainEmptyCell_BeforeUserPlay;
+        int remainEmptyCell_AfterUserPlay;
         //Act
-        int remainEmptyCell_BeforeUserPlay = sut.getEmptyCellNumber();
-        int[][] newBoard = sut.play(boardSize - 1, boardSize - 1);
-        int remainEmptyCell_AfterUserPlay = sut.getEmptyCellNumber();
+         remainEmptyCell_BeforeUserPlay = sut.getEmptyCellNumber();
+        sut.play(boardSize - 1, boardSize - 1);
+        int[][] newBoard = sut.getBoard();
+        remainEmptyCell_AfterUserPlay = sut.getEmptyCellNumber();
         //Assert
         assertThat(remainEmptyCell_BeforeUserPlay - 2).isEqualTo(remainEmptyCell_AfterUserPlay);
     }
@@ -80,13 +83,13 @@ public class TicTacToeTest {
     @Test
     public void checkHorizontalGameStatus_WhenUserOrComputerWin_ShouldReturnWinner() {
         //Arrange
-        //Act
         int[][] finishedGameBoard = new int[3][3];
         finishedGameBoard[0][0] = 1;
         finishedGameBoard[0][1] = 1;
         finishedGameBoard[0][2] = 1;
+        //Act
         sut.setBoard(finishedGameBoard);
-        String result = sut.checkGameStatus();
+        String result = sut.checkHorizontalGameStatus(finishedGameBoard.length);
         //Assert
         assertThat(result).isEqualTo("X");
     }
@@ -94,50 +97,44 @@ public class TicTacToeTest {
     @Test
     public void checkVerticalGameStatus_WhenUserOrComputerWin_ShouldReturnWinner() {
         //Arrange
-        //Act
         int[][] finishedGameBoard = new int[3][3];
         finishedGameBoard[0][0] = 1;
         finishedGameBoard[1][0] = 1;
         finishedGameBoard[2][0] = 1;
+        //Act
         sut.setBoard(finishedGameBoard);
-        String result = sut.checkGameStatus();
+        String result = sut.checkVerticalGameStatus(finishedGameBoard.length);
         //Assert
         assertThat(result).isEqualTo("X");
     }
 
     @Test
-    public void checkCrossGameStatus_WhenUserOrComputerWin_ShouldReturnWinner() {
+    public void checkCrossBackslashGameStatus_WhenUserOrComputerWin_ShouldReturnWinner() {
         //Arrange
-        //Act
         int[][] finishedGameBoard = new int[3][3];
         finishedGameBoard[0][0] = -1;
         finishedGameBoard[1][1] = -1;
         finishedGameBoard[2][2] = -1;
+        //Act
         sut.setBoard(finishedGameBoard);
-        String result = sut.checkGameStatus();
+        String result = sut.checkCrossBackslashGameStatus(finishedGameBoard.length);
         //Assert
         assertThat(result).isEqualTo("O");
     }
     @Test
-    public void checkCrossGameStatus_WhenUserAndComputerNotWin_ShouldReturnDraw() {
+    public void checkCrossForwardSlashGameStatus_WhenUserOrComputerWin_ShouldReturnWinner() {
         //Arrange
         //Act
         int[][] finishedGameBoard = new int[3][3];
         finishedGameBoard[0][0] = 1;
         finishedGameBoard[0][1] = 1;
         finishedGameBoard[0][2] = -1;
-        finishedGameBoard[1][0] = -1;
         finishedGameBoard[1][1] = -1;
-        finishedGameBoard[2][0] = 1;
-        finishedGameBoard[1][2] = 1;
-        finishedGameBoard[2][1] = -1;
-        finishedGameBoard[2][2] = 1;
-        /*sut.setBoard(finishedGameBoard);
-        sut.showGameBoard();*/
+        finishedGameBoard[2][0] = -1;
         sut.setBoard(finishedGameBoard);
-        String result = sut.checkGameStatus();
+        String result = sut.checkCrossForwardSlashGameStatus(finishedGameBoard.length);
         //Assert
-        assertThat(result).isEqualTo("Draw");
+        assertThat(result).isEqualTo("O");
     }
 
     @ParameterizedTest
